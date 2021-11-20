@@ -5,7 +5,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637730081891476260
+      ticks: 637730317775655425
     m_Hash: 1197561154
   m_LockFileStatus:
     m_FilePath: C:/Users/maria/OneDrive/Dokumenty/OurSnake/Snake/Packages/packages-lock.json
@@ -13,7 +13,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637730082154235496
+      ticks: 637730318254845895
     m_Hash: 3466310726
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}

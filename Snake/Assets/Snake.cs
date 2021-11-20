@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Snake : MonoBehaviour
 {
@@ -12,6 +14,8 @@ public class Snake : MonoBehaviour
     List<GameObject> tail;
 
     Vector2 dir;
+
+    public Text points;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +25,7 @@ public class Snake : MonoBehaviour
         createPlayer();
         spawnFood();
         block.SetActive(false);
+        isAlive = true;
     }
     private Vector2 getRandomPos(){
         return new Vector2(Random.Range(-xSize/2+1, xSize/2), Random.Range(-ySize/2+1, ySize/2));
@@ -38,6 +43,9 @@ public class Snake : MonoBehaviour
         return isInHead || isInTail;
     }
     GameObject food;
+
+    bool isAlive;
+
     private void spawnFood(){
         Vector2 spawnPos = getRandomPos();
         while(containedInSnake(spawnPos)){ 
@@ -74,6 +82,17 @@ public class Snake : MonoBehaviour
     }
 
     float passedTime, timeBetweenMovements;
+
+    public GameObject gameOverUI;
+
+    private void gameOver(){
+        isAlive = false;
+        gameOverUI.SetActive(true);
+    }
+
+    public void restart(){
+        SceneManager.LoadScene(0);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -88,7 +107,7 @@ public class Snake : MonoBehaviour
         }
 
         passedTime += Time.deltaTime;
-        if(timeBetweenMovements < passedTime){
+        if(timeBetweenMovements < passedTime && isAlive){
             passedTime = 0;
             //Move
             Vector3 newPosition = head.GetComponent<Transform>().position + new Vector3(dir.x, dir.y, 0);
@@ -99,13 +118,13 @@ public class Snake : MonoBehaviour
             || newPosition.x <= -xSize/2
             || newPosition.y >= ySize/2
             || newPosition.y <= -ySize/2){
-                //Snake's death
+                gameOver();
             }
 
             //tail collision
             foreach(var item in tail){
                 if(item.transform.position == newPosition){
-                    //Snake's death
+                    gameOver();
                 }
             }
             if(newPosition.x == food.transform.position.x && newPosition.y == food.transform.position.y){
@@ -118,7 +137,7 @@ public class Snake : MonoBehaviour
                 head = newTile;
                 head.GetComponent<MeshRenderer>().material = headMaterial;
                 spawnFood();
-                //tu bedzie zliczanie pkt
+                points.text = "Points: " + (tail.Count*100);
             }else
             {
                 if(tail.Count == 0){
